@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Emailer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <%= render 'favicon' %>
+    <%= include_ember_script_tags :frontend %>
+    <%= include_ember_stylesheet_tags :frontend %>
+    <%= stylesheet_link_tag 'application' %>
+    <%= csrf_meta_tags %>
+  </head>
+  <body>
+    <%= yield %>
+  </body>
+</html>

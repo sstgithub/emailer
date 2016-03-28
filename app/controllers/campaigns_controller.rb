@@ -6,11 +6,13 @@ class CampaignsController < ApplicationController
   # GET /campaigns.json
   def index
     @campaigns = Campaign.all
+    render json: @campaigns
   end
 
   # GET /campaigns/1
   # GET /campaigns/1.json
   def show
+    render json: @campaign
   end
 
   # GET /campaigns/1/edit
@@ -69,6 +71,11 @@ class CampaignsController < ApplicationController
   end
 
   private
+    # Use callbacks to share common setup or constraints between actions.
+    def set_campaign
+      @campaign = Campaign.find(params[:id])
+    end
+
     def campaign_params
       params.require(:campaign).permit(:campaign_name, :email_subject, :email_body)
     end

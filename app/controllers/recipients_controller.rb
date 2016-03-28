@@ -5,11 +5,13 @@ class RecipientsController < ApplicationController
   # GET /recipients.json
   def index
     @recipients = Recipient.all
+    render json: @recipients
   end
 
   # GET /recipients/1
   # GET /recipients/1.json
   def show
+    render json: @recipient
   end
 
   # GET /recipients/1/edit
