@@ -1,27 +1,33 @@
-<div class="row">
-  <div class="col-md-1">.col-md-1</div>
-  <div class="col-md-1">.col-md-1</div>
-  <div class="col-md-1">.col-md-1</div>
-  <div class="col-md-1">.col-md-1</div>
-  <div class="col-md-1">.col-md-1</div>
-  <div class="col-md-1">.col-md-1</div>
-  <div class="col-md-1">.col-md-1</div>
-  <div class="col-md-1">.col-md-1</div>
-  <div class="col-md-1">.col-md-1</div>
-  <div class="col-md-1">.col-md-1</div>
-  <div class="col-md-1">.col-md-1</div>
-  <div class="col-md-1">.col-md-1</div>
+<div class="col-sm-12">
+  <div class="panel panel-default">
+    <!-- Default panel contents -->
+    <div class="panel-heading">List of Recipients</div>
+
+    <!-- Table -->
+    <table class="table">
+      <thead>
+        <tr>
+          <td>Salutation</td>
+          <td>First name</td>
+          <td>Last name</td>
+          <td>Email address</td>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each recipient in model.content.recipients}}
+          {{debugger}}
+          <td>{{recipient}}</td>
+          <td>{{recipient.firstName}}</td>
+          <td>{{recipient.lastName}}</td>
+          <td>{{recipient.emailAddress}}</td>
+        {{else}}
+          <td>Hello</td>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
 </div>
-<div class="row">
-  <div class="col-md-8">.col-md-8</div>
-  <div class="col-md-4">.col-md-4</div>
-</div>
-<div class="row">
-  <div class="col-md-4">.col-md-4</div>
-  <div class="col-md-4">.col-md-4</div>
-  <div class="col-md-4">.col-md-4</div>
-</div>
-<div class="row">
-  <div class="col-md-6">.col-md-6</div>
-  <div class="col-md-6">.col-md-6</div>
+
+<div class="col-sm-7">
+  {{#link-to "campaigns" class="btn btn-lg btn-primary"}}Add Recipient{{/link-to}}
 </div>

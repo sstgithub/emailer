@@ -26,6 +26,8 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'ember-cli-rails'
 gem 'figaro'
 gem 'active_model_serializers', '~> 0.10.0.rc4'
+gem 'mailgun-ruby', '~>1.0.5', git: 'git://github.com/mailgun/mailgun-ruby', require: 'mailgun'
+gem 'mandrill-api'
 
 
 group :development, :test do
