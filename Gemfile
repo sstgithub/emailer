@@ -24,6 +24,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # gem 'unicorn'
 
 gem 'ember-cli-rails'
+gem 'figaro'
 
 
 group :development, :test do
@@ -44,4 +45,6 @@ group :test do
   gem "capybara-webkit"
 end
 
-gem 'rails_12factor', group: [:staging, :production]
+group :staging, :production do
+  gem 'rails_12factor'
+end

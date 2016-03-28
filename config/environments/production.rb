@@ -81,9 +81,9 @@ Rails.application.configure do
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.perform_deliveries = true
   config.action_mailer.smtp_settings = {
-    domain: 'sidtantia.com',
+    domain: ENV["DOMAIN"],
     port: 587,
-    password: 'MailerServiceApp1!', #install figaro gem and put this in application.yml
+    password: ENV["MANDRILL_PASSWORD"],
     enable_starttls_auto: true,
     authentication: :plain
   }
