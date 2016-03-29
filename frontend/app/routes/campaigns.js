@@ -2,7 +2,9 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   model() {
-    this.store.findAll('recipient');
-    return this.store.findAll('campaign');
+    return Ember.RSVP.hash({
+      recipients: this.store.findAll('recipient'),
+      campaigns: this.store.findAll('campaign')
+    });
   }
 });

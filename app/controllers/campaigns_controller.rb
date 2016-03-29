@@ -1,6 +1,5 @@
 class CampaignsController < ApplicationController
   before_action :set_campaign, only: [:show, :edit, :update, :destroy]
-  skip_before_action :verify_authenticity_token
 
   # GET /campaigns
   # GET /campaigns.json
@@ -22,39 +21,31 @@ class CampaignsController < ApplicationController
   # POST /campaigns
   # POST /campaigns.json
   def create
-    @campaign = Campaign.new(campaign_params)
+    @campaign = Campaign.new(full_campaign_params)
 
-    respond_to do |format|
-      if @campaign.save
-        format.html { redirect_to @campaign, notice: 'Campaign was successfully created.' }
-        format.json { render :show, status: :created, location: @campaign }
-      else
-        format.html { render :new }
-        format.json { render json: @campaign.errors, status: :unprocessable_entity }
-      end
+    if @campaign.save
+      render json: @campaign
+    else
+      render json: @campaign.errors, status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /campaigns/1
   # PATCH/PUT /campaigns/1.json
   def update
-    respond_to do |format|
-      if @campaign.update(campaign_params)
-        format.html { redirect_to @campaign, notice: 'Campaign was successfully updated.' }
-        format.json { render :show, status: :ok, location: @campaign }
-      else
-        format.html { render :edit }
-        format.json { render json: @campaign.errors, status: :unprocessable_entity }
-      end
+    binding.pry
+    if @campaign.update(full_campaign_params)
+      head :ok
+    else
+      render json: @campaign.errors, status: :unprocessable_entity
     end
   end
 
   def send_campaign
+    binding.pry
     campaign = Campaign.find_by_campaign_name(params["campaign_name"])
     subject = campaign.email_subject
     body = campaign.email_body
-    # recipient = Recipient.find(params['recipient_ids'].first)
-    # response = CampaignMailer.send_mail(recipient, subject, body)
 
     response = CampaignMailer.send_mail(params['recipient_ids'], subject, body)
     render json: response
@@ -64,10 +55,7 @@ class CampaignsController < ApplicationController
   # DELETE /campaigns/1.json
   def destroy
     @campaign.destroy
-    respond_to do |format|
-      format.html { redirect_to campaigns_url, notice: 'Campaign was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+    head :no_content
   end
 
   private
@@ -76,7 +64,13 @@ class CampaignsController < ApplicationController
       @campaign = Campaign.find(params[:id])
     end
 
+    def full_campaign_params
+      hash = campaign_params
+      hash["recipient_ids"] = params["campaign"]["recipient_ids"]
+      hash
+    end
+
     def campaign_params
-      params.require(:campaign).permit(:campaign_name, :email_subject, :email_body, :sent)
+      params.require(:campaign).permit(:campaign_name, :email_subject, :email_body, :sent, :recipient_ids)
     end
 end

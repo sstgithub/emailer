@@ -1,0 +1,25 @@
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4>Recipient</h4>
+        </div>
+        <div class="modal-body">
+          <form role='form'>
+            <div class='form-group'>
+                <label>Salutation</label>
+                {{input type='text' value=model.salutation class='form-control' placeholder='Salutation'}}
+                <label>First name</label>
+                {{input type='text' value=model.firstName class='form-control' placeholder='First name'}}
+                <label>Last name</label>
+                {{input type='text' value=model.lastName class='form-control' placeholder='Last name'}}
+                <label>Email address</label>
+                {{input type='text' value=model.emailAddress class='form-control' placeholder='Email address'}}
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+            <button type="cancel" class="btn btn-primary btn-white" type="submit" {{action 'cancel' model}}>Cancel</button>
+            <button type="submit" class="btn btn-primary btn-white" type="submit" {{action 'submit' model}}>Submit</button>
+        </div>
+    </div><!-- /.modal-content -->
+</div><!-- /.modal-dialog -->

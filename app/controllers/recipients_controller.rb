@@ -21,30 +21,22 @@ class RecipientsController < ApplicationController
   # POST /recipients
   # POST /recipients.json
   def create
-    @recipient = Recipient.new(recipient_params)
+    @recipient = Recipient.new(full_recipient_params)
 
-    respond_to do |format|
-      if @recipient.save
-        format.html { redirect_to @recipient, notice: 'Recipient was successfully created.' }
-        format.json { render :show, status: :created, location: @recipient }
-      else
-        format.html { render :new }
-        format.json { render json: @recipient.errors, status: :unprocessable_entity }
-      end
+    if @recipient.save
+      render json: @recipient
+    else
+      render json: @recipient.errors, status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /recipients/1
   # PATCH/PUT /recipients/1.json
   def update
-    respond_to do |format|
-      if @recipient.update(recipient_params)
-        format.html { redirect_to @recipient, notice: 'Recipient was successfully updated.' }
-        format.json { render :show, status: :ok, location: @recipient }
-      else
-        format.html { render :edit }
-        format.json { render json: @recipient.errors, status: :unprocessable_entity }
-      end
+    if @recipient.update(full_recipient_params)
+      head :ok
+    else
+      render json: @recipient.errors, status: :unprocessable_entity
     end
   end
 
@@ -52,10 +44,7 @@ class RecipientsController < ApplicationController
   # DELETE /recipients/1.json
   def destroy
     @recipient.destroy
-    respond_to do |format|
-      format.html { redirect_to recipients_url, notice: 'Recipient was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+    head :no_content
   end
 
   private
@@ -64,8 +53,20 @@ class RecipientsController < ApplicationController
       @recipient = Recipient.find(params[:id])
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
+    def full_recipient_params
+      hash = recipient_params
+      hash["campaign_ids"] = params["recipient"]["campaign_ids"]
+      hash
+    end
+
+    # def campaign_ids
+    #   params["data"]["relationships"]["campaigns"]["data"].map {|campaign| campaign["id"]}
+    # end
+
     def recipient_params
-      params.require(:recipient).permit(:email_address, :first_name, :last_name, :salutation)
+      # params.require(:data)
+      #     .require(:attributes)
+      #     .permit(:first_name, :"last_name", :"email_address", :"sent", :"salutation")
+      params.require(:recipient).permit(:first_name, :last_name, :email_address, :salutation, :campaign_ids)
     end
 end

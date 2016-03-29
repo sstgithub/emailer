@@ -1,4 +1,5 @@
 class CampaignMailer < ApplicationMailer
+  attr_accessor :mailgun_client, :mandrill_client
   require 'mailgun'
   require 'mandrill'
   #
@@ -16,7 +17,7 @@ class CampaignMailer < ApplicationMailer
       # Can make this better by sending in as |recipient.<var name>| and then
       # use regex to replace all |...| with #{...}??
       recipient_keys.each do |key|
-        body.gsub!("|#{key}|", recipient[key].to_s)
+        body.gsub!("|#{key}|", recipient.send(key).to_s)
       end
       # mailer_services = MailerService.all
       # mailer_services.each do |mailer_service|
@@ -28,16 +29,20 @@ class CampaignMailer < ApplicationMailer
       #                   subject: subject)
       #   break if response
       # end
-      response = send_using_mailgun_api(recipient.email_address, body, subject)
-      #TODO: brittle, could time out. Put all sending mail into background jobs.
-      i = 0
-      email_was_delivered = false
-      until email_was_delivered || i == 5
-        sleep(1)
-        i += 1
-        email_was_delivered = @mailgun_client.get(ENV["MAILGUN_DOMAIN"]+"/events", {event: "delivered"}).to_h["items"].map {|x| x["message"]["headers"]["message-id"]}.select {|id| id==response["id"][1...-1]}.count >= 1
-      end
-      unless email_was_delivered
+      begin
+        response = send_using_mailgun_api(recipient.email_address, body, subject)
+        # #TODO: brittle, could time out. Put all sending mail into background jobs.
+        # i = 0
+        # email_was_delivered = false
+        # until i == 5 || email_was_delivered
+        #   sleep(1)
+        #   i += 1
+        #   email_was_delivered = @mailgun_client.get(ENV["MAILGUN_DOMAIN"]+"/events", {event: "delivered"}).to_h["items"].map {|x| x["message"]["headers"]["message-id"]}.select {|id| id==response["id"][1...-1]}.count >= 1
+        # end
+        # unless email_was_delivered
+        #   response = send_using_mandrill_api(recipient.email_address, body, subject)
+        # end
+      rescue Mailgun::Error => e
         response = send_using_mandrill_api(recipient.email_address, body, subject)
       end
       responses << response
@@ -45,31 +50,29 @@ class CampaignMailer < ApplicationMailer
     return responses
   end
 
-  private
+  def send_using_mailgun_api(to, text, subject)
+    @mailgun_client = Mailgun::Client.new ENV['MAILGUN_KEY']
+    message_params = {from: 'sid@sidtantia.com',
+                      to: to,
+                      subject: subject,
+                      text: text}
+    @mailgun_client.send_message(ENV['MAILGUN_DOMAIN'], message_params).to_h!
+  end
 
-    def send_using_mailgun_api(to, text, subject)
-      @mailgun_client = Mailgun::Client.new ENV['MAILGUN_KEY']
-      message_params = {from: 'sid@sidtantia.com',
-                        to: to,
-                        subject: subject,
-                        text: text}
-      @mailgun_client.send_message(ENV['MAILGUN_DOMAIN'], message_params).to_h!
-    end
-
-    def send_using_mandrill_api(email, text, subject)
-      @mandrill_client = Mandrill::API.new ENV['MANDRILL_KEY']
-      message_params = {from_email: "sid@sidtantia.com",
-                        to: [
-                          {
-                            "type": "to",
-                            "email": email
-                          }
-                        ],
-                        subject: subject,
-                        text: text}
-      async = false
-      @mandrill_client.messages.send message_params, async
-    end
+  def send_using_mandrill_api(email, text, subject)
+    @mandrill_client = Mandrill::API.new ENV['MANDRILL_KEY']
+    message_params = {from_email: "sid@sidtantia.com",
+                      to: [
+                        {
+                          "type": "to",
+                          "email": email
+                        }
+                      ],
+                      subject: subject,
+                      text: text}
+    async = false
+    @mandrill_client.messages.send message_params, async
+  end
 
     # def setup_email_account(mailer_service)
     #   ActionMailer::Base.raise_delivery_errors = true

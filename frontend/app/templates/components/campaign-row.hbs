@@ -1,0 +1,4 @@
+<td>{{campaign.campaignName}}</td>
+<td>{{totalRecipients}}</td>
+<td>{{#link-to "campaigns.edit" campaign class="btn btn-sm btn-warning"}}Finish{{/link-to}}</td>
+<td><button type="button" class="btn btn-sm btn-danger" {{action 'delete' campaign.id}}>Delete</button></td>

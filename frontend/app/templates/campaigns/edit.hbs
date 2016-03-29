@@ -1,0 +1,40 @@
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4>Campaign</h4>
+        </div>
+        <div class="modal-body">
+          <form role='form'>
+            <div class='form-group'>
+                <label>Recipients</label>
+                {{#power-select-multiple
+                    options=recipients
+                    selected=selectedRecipients
+                    placeholder="Choose recipients"
+                    onchange=(action (mut selectedRecipients))
+                    as |recipient|
+                }}
+                  {{recipient.emailAddress}}
+                {{/power-select-multiple}}
+            </div>
+            <div class='form-group'>
+                <label>Campaign name</label>
+                {{input type='text' value=model.campaignName class='form-control' placeholder='Campaign name'}}
+            </div>
+            <div class='form-group'>
+                <label>Email subject</label>
+                {{input type='text' value=model.emailSubject class='form-control' placeholder='Email subject'}}
+            </div>
+            <div class='form-group'>
+                <label>Email body</label>
+                {{input type='text' value=model.emailBody class='form-control' placeholder='Email body'}}
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+            <button type="cancel" class="btn btn-primary btn-warning" type="submit" {{action 'cancel' model}}>Cancel</button>
+            <button class="btn btn-primary btn-info" {{action 'saveDraft' model}}>Save For Later</button>
+            <button type="submit" class="btn btn-primary btn-primary" type="submit" {{action 'send' model}}>Send Now</button>
+        </div>
+    </div><!-- /.modal-content -->
+</div><!-- /.modal-dialog -->

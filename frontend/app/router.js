@@ -6,10 +6,13 @@ const Router = Ember.Router.extend({
 });
 
 Router.map(function() {
-  this.route('campaigns');
+  this.route('campaigns', function() {
+    this.route('new', {path: 'new'});
+    this.route('edit', {path: 'edit/:campaign_id'});
+  });
   this.route('recipients', function() {
-    this.route('new');
     this.route('edit', {path: 'edit/:recipient_id'})
+    this.route('new', {path: 'new'});
   });
 });
 

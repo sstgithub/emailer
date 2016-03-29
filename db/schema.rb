@@ -20,9 +20,9 @@ ActiveRecord::Schema.define(version: 20160328115550) do
     t.string   "campaign_name"
     t.string   "email_subject"
     t.text     "email_body"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
-    t.boolean  "sent"
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+    t.boolean  "sent",          default: false
   end
 
   create_table "campaigns_recipients", id: false, force: :cascade do |t|

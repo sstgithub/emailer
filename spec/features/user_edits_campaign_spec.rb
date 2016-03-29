@@ -1,13 +1,16 @@
 require 'rails_helper'
 
-feature 'User creates campaign' do
+feature 'User adds recipients to unsent campaign' do
   before :each do
+    Recipient.create(email_address: "email.address", first_name: "Sid")
+    Campaign.create(campaign_name: "Test name", recipient_ids: [1, sent: false)
     visit "/"
-    click_link "Add Campaign"
-    select "email.address", from: "recipientSelect"
-    fill_in "campaign_name", "Test Name"
-    fill_in "email_body", "Test body"
-    fill_in "email_subject", "Test subject"
+    click_link ""
+  end
+
+  after :each do
+    Recipient.destroy_all
+    Campaign.destroy_all
   end
 
   scenario 'and saves for later' do
@@ -22,6 +25,6 @@ feature 'User creates campaign' do
 
   scenario 'and cancels' do
     click_link "Cancel"
-    expect(page).not_to have_css('sent-campaign')
+    expect(page).to have_css('.unsent-campaign', count: 1, text: 'Test name')
   end
 end

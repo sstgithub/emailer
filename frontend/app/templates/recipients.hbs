@@ -1,3 +1,5 @@
+{{outlet}}
+
 <div class="col-sm-12">
   <div class="panel panel-default">
     <!-- Default panel contents -->
@@ -14,14 +16,15 @@
         </tr>
       </thead>
       <tbody>
-        {{#each recipient in model.content.recipients}}
-          {{debugger}}
-          <td>{{recipient}}</td>
-          <td>{{recipient.firstName}}</td>
-          <td>{{recipient.lastName}}</td>
-          <td>{{recipient.emailAddress}}</td>
-        {{else}}
-          <td>Hello</td>
+        {{#each model.recipients as |recipient|}}
+          <tr>
+            <td>{{recipient.salutation}}</td>
+            <td>{{recipient.firstName}}</td>
+            <td>{{recipient.lastName}}</td>
+            <td>{{recipient.emailAddress}}</td>
+            <td>{{#link-to "recipients.edit" recipient class="btn btn-sm btn-warning"}}Edit{{/link-to}}</td>
+            <td><button type="button" class="btn btn-sm btn-danger" {{action 'delete' recipient.id}}>Delete</button></td>
+          </tr>
         {{/each}}
       </tbody>
     </table>
@@ -29,5 +32,5 @@
 </div>
 
 <div class="col-sm-7">
-  {{#link-to "campaigns" class="btn btn-lg btn-primary"}}Add Recipient{{/link-to}}
+  {{#link-to "recipients.new" class="btn btn-lg btn-primary"}}Add Recipient{{/link-to}}
 </div>
