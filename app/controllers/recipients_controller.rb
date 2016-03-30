@@ -21,7 +21,7 @@ class RecipientsController < ApplicationController
   # POST /recipients
   # POST /recipients.json
   def create
-    @recipient = Recipient.new(full_recipient_params)
+    @recipient = Recipient.new(recipient_params)
 
     if @recipient.save
       render json: @recipient
@@ -33,8 +33,8 @@ class RecipientsController < ApplicationController
   # PATCH/PUT /recipients/1
   # PATCH/PUT /recipients/1.json
   def update
-    if @recipient.update(full_recipient_params)
-      head :ok
+    if @recipient.update(recipient_params)
+      render json: @recipient
     else
       render json: @recipient.errors, status: :unprocessable_entity
     end
@@ -53,20 +53,10 @@ class RecipientsController < ApplicationController
       @recipient = Recipient.find(params[:id])
     end
 
-    def full_recipient_params
-      hash = recipient_params
-      hash["campaign_ids"] = params["recipient"]["campaign_ids"]
-      hash
-    end
-
-    # def campaign_ids
-    #   params["data"]["relationships"]["campaigns"]["data"].map {|campaign| campaign["id"]}
-    # end
-
     def recipient_params
-      # params.require(:data)
-      #     .require(:attributes)
-      #     .permit(:first_name, :"last_name", :"email_address", :"sent", :"salutation")
-      params.require(:recipient).permit(:first_name, :last_name, :email_address, :salutation, :campaign_ids)
+      #use new method in AMS10.0rc4 to deserialize JSONAPI
+      # and then transform keys to underscores
+      deserialized_hash = ActiveModelSerializers::Deserialization.jsonapi_parse(params.to_unsafe_h)
+      deserialized_hash.transform_keys! {|key| key.to_s.underscore}
     end
 end

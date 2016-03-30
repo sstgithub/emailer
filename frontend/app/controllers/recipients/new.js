@@ -4,7 +4,7 @@ export default Ember.Controller.extend({
   actions: {
     submit(model) {
       model.save();
-      this.send('transitionToRecipients')
+      this.send('transitionToRecipients');
     },
     cancel(model) {
       this.store.deleteRecord(model);

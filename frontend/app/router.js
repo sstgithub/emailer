@@ -11,7 +11,7 @@ Router.map(function() {
     this.route('edit', {path: 'edit/:campaign_id'});
   });
   this.route('recipients', function() {
-    this.route('edit', {path: 'edit/:recipient_id'})
+    this.route('edit', {path: 'edit/:recipient_id'});
     this.route('new', {path: 'new'});
   });
 });

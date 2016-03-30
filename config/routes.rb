@@ -1,9 +1,9 @@
 Rails.application.routes.draw do
   resources :mailer_services
   resources :recipients
-  resources :campaigns do
-    post :send_campaign, :on => :collection
-  end
+  resources :campaigns
+
+  post "/campaigns/send_campaign"
 
   mount_ember_app :frontend, to: "/"
   # The priority is based upon order of creation: first created -> highest priority.

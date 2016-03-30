@@ -2,12 +2,12 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   model: function() {
-    return this.store.createRecord('campaign')//, {campaignName: "", emailSubject: "", emailBody: "", sent: false, recipients: []})
+    return this.store.createRecord('campaign');
   },
 
   actions: {
     transitionToCampaigns: function() {
-      this.transitionTo('campaigns')
+      this.transitionTo('campaigns');
     }
   }
 });

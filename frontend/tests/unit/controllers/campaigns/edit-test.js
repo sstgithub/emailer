@@ -1,3 +1,4 @@
+import Ember from 'ember';
 import { moduleFor, test } from 'ember-qunit';
 import FakeServer, { stubRequest } from 'ember-cli-fake-server';
 

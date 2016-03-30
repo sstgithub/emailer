@@ -19,24 +19,10 @@ RSpec.describe CampaignsController, type: :controller do
   let(:valid_session) { {} }
 
   describe "POST #send_campaign" do
-    before :each do
-      @params = {
-        campaign_name: 'Test Name',
-        recipient_ids: [1, 3, 5]
-      }
-    end
 
     it "can send correct campaign to CampaignMailer" do
-      params = {
-        campaign_name: 'Test Name',
-        recipient_ids: [1, 3, 5]
-      }
-      campaign = double("campaign", :email_subject => "subject", :email_body => "body")
-
-      expect(Campaign).to receive(:find_by_campaign_name)
-        .with('Test Name').and_return(campaign)
-      # expect(campaign).to receive(:email_subject).and_return("subject")
-      # expect(campaign).to receive(:email_body).and_return("body")
+      params = {"data"=>{"attributes"=>{"campaign-name"=>"Test name", "email-body"=>"body", "email-subject"=>"subject", "sent"=>false}, "relationships"=>{"recipients"=>{"data"=>[{"type"=>"recipients", "id"=>"1"}, {"type"=>"recipients", "id"=>"3"}, {"type"=>"recipients", "id"=>"5"}]}}, "type"=>"campaigns"}}
+      
       expect(CampaignMailer).to receive(:send_mail).with(["1","3","5"], "subject", "body")
 
       post('send_campaign', params)

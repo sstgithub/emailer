@@ -7,10 +7,6 @@ RSpec.describe RecipientsController, type: :routing do
       expect(:get => "/recipients").to route_to("recipients#index")
     end
 
-    it "routes to #new" do
-      expect(:get => "/recipients/new").to route_to("recipients#new")
-    end
-
     it "routes to #show" do
       expect(:get => "/recipients/1").to route_to("recipients#show", :id => "1")
     end

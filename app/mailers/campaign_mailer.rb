@@ -1,12 +1,6 @@
 class CampaignMailer < ApplicationMailer
-  attr_accessor :mailgun_client, :mandrill_client
   require 'mailgun'
   require 'mandrill'
-  #
-  # default(
-  #   from: "sid@sidtantia.com",
-  #   replyto: "sid@sidtantia.com"
-  # )
 
   def send_mail(recipient_ids, subject, body)
     responses = []
@@ -18,30 +12,9 @@ class CampaignMailer < ApplicationMailer
       # use regex to replace all |...| with #{...}??
       recipient_keys.each do |key|
         body.gsub!("|#{key}|", recipient.send(key).to_s)
-      end
-      # mailer_services = MailerService.all
-      # mailer_services.each do |mailer_service|
-      #   setup_email_account(mailer_service)
-      #   binding.pry
-      #   response = mail(to: recipient.email_address,
-      #                   body: body,
-      #                   content_type: "text/html",
-      #                   subject: subject)
-      #   break if response
-      # end
+      end if body
       begin
         response = send_using_mailgun_api(recipient.email_address, body, subject)
-        # #TODO: brittle, could time out. Put all sending mail into background jobs.
-        # i = 0
-        # email_was_delivered = false
-        # until i == 5 || email_was_delivered
-        #   sleep(1)
-        #   i += 1
-        #   email_was_delivered = @mailgun_client.get(ENV["MAILGUN_DOMAIN"]+"/events", {event: "delivered"}).to_h["items"].map {|x| x["message"]["headers"]["message-id"]}.select {|id| id==response["id"][1...-1]}.count >= 1
-        # end
-        # unless email_was_delivered
-        #   response = send_using_mandrill_api(recipient.email_address, body, subject)
-        # end
       rescue Mailgun::Error => e
         response = send_using_mandrill_api(recipient.email_address, body, subject)
       end
@@ -73,15 +46,5 @@ class CampaignMailer < ApplicationMailer
     async = false
     @mandrill_client.messages.send message_params, async
   end
-
-    # def setup_email_account(mailer_service)
-    #   ActionMailer::Base.raise_delivery_errors = true
-    #   settings = ActionMailer::Base.smtp_settings
-    #   settings[:user_name] = mailer_service.username
-    #   settings[:domain] ||= mailer_service.domain
-    #   settings[:address] = mailer_service.address
-    #   settings[:password] = mailer_service.password || ENV['SMTP_password']
-    #   settings[:port] = mailer_service.port || 587
-    # end
 
 end

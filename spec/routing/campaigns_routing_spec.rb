@@ -3,12 +3,12 @@ require "rails_helper"
 RSpec.describe CampaignsController, type: :routing do
   describe "routing" do
 
-    it "routes to #index" do
-      expect(:get => "/campaigns").to route_to("campaigns#index")
+    it "routes to #send_campaign" do
+      expect(:post => "/campaigns/send_campaign").to route_to("campaigns#send_campaign")
     end
 
-    it "routes to #new" do
-      expect(:get => "/campaigns/new").to route_to("campaigns#new")
+    it "routes to #index" do
+      expect(:get => "/campaigns").to route_to("campaigns#index")
     end
 
     it "routes to #show" do

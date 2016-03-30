@@ -1,4 +1,9 @@
 <td>{{campaign.campaignName}}</td>
+<td>{{campaign.emailSubject}}</td>
 <td>{{totalRecipients}}</td>
-<td>{{#link-to "campaigns.edit" campaign class="btn btn-sm btn-warning"}}Finish{{/link-to}}</td>
+{{#if campaign.sent}}
+  <td>{{campaign.updatedAt}}</td>
+{{else}}
+  <td>{{#link-to "campaigns.edit" campaign class="btn btn-sm btn-warning"}}Finish{{/link-to}}</td>
+{{/if}}
 <td><button type="button" class="btn btn-sm btn-danger" {{action 'delete' campaign.id}}>Delete</button></td>
