@@ -43,8 +43,9 @@ class CampaignsController < ApplicationController
   def send_campaign
     subject = campaign_params["email_subject"]
     body = campaign_params["email_body"]
+    recipient_ids = campaign_params["recipient_ids"]
 
-    response = CampaignMailer.send_mail(campaign_params["recipient_ids"], subject, body)
+    response = CampaignMailer.send_mail(recipient_ids, subject, body)
     render json: response
   end
 

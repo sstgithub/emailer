@@ -6,12 +6,20 @@ Description
 An app to send emails newsletter-style:
 * Automatically failover to a second email sending service if the first one fails
 * Recipients has and belongs to many Campaigns and vice versa, so user can add multiple recipients to each campaign. Each recipient will receive a separate email.
-* Use dynamic recipient variables in campaign email body:
+* Use dynamic recipient variables (merge tags) in campaign email body:
  * |first_name|
  * |last_name|
  * |salutation|
  * |email_address|
 * Add and send campaign immediately or save draft and send later (sent campaigns show time sent)
+
+Installation
+==
+
+-ruby v2.2.4
+-bundle install
+-rake ember:install
+-figaro install (add in your mandrill and mailgun keys)
 
 Technology used
 ===

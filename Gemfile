@@ -45,7 +45,6 @@ end
 
 group :test do
   gem "capybara"
-  gem "capybara-webkit"
 end
 
 group :staging, :production do

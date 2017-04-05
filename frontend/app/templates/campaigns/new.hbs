@@ -7,15 +7,6 @@
           <form role='form'>
             <div class='form-group'>
                 <label>Recipients</label>
-                <!-- {{select-2
-                    content=recipients
-                    value=model.recipients
-                    multiple=true
-                    placeholder="Choose recipients"
-                    optionValuePath="id"
-                    optionLabelPath="firstName"
-                    optionDescriptionPath="emailAddress"
-                }} -->
                 {{#power-select-multiple
                     options=recipients
                     selected=selectedRecipients
@@ -35,8 +26,8 @@
                 {{input type='text' value=model.emailSubject class='form-control' placeholder='Email subject'}}
             </div>
             <div class='form-group'>
-                <label>Email body</label>
-                {{input type='text' value=model.emailBody class='form-control' placeholder='Email body'}}
+                <label>Email body (Merge tags: |first_name|, |last_name|, |salutation|, and |email_address|)</label>
+                {{textarea value=model.emailBody class='form-control' placeholder='Email body'}}
             </div>
           </form>
         </div>

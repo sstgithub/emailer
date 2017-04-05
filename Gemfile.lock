@@ -64,9 +64,6 @@ GEM
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       xpath (~> 2.0)
-    capybara-webkit (1.8.0)
-      capybara (>= 2.3.0, < 2.7.0)
-      json
     climate_control (0.0.3)
       activesupport (>= 3.0)
     cocaine (0.5.8)
@@ -227,7 +224,6 @@ PLATFORMS
 DEPENDENCIES
   active_model_serializers (~> 0.10.0.rc4)
   capybara
-  capybara-webkit
   ember-cli-rails
   figaro
   jbuilder (~> 2.0)
@@ -246,4 +242,4 @@ DEPENDENCIES
   web-console (~> 2.0)
 
 BUNDLED WITH
-   1.10.6
+   1.14.5

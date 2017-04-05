@@ -8,11 +8,11 @@ class CampaignMailer < ApplicationMailer
     recipient_ids.each do |recipient_id|
       recipient = Recipient.find(recipient_id)
       #Replace all `|<variable name here>|` with actual variables for recipient.
-      # Can make this better by sending in as |recipient.<var name>| and then
-      # use regex to replace all |...| with #{...}??
-      recipient_keys.each do |key|
-        body.gsub!("|#{key}|", recipient.send(key).to_s)
-      end if body
+      if body
+        recipient_keys.each do |key|
+          body.gsub!("|#{key}|", recipient.send(key).to_s)
+        end
+      end
       begin
         response = send_using_mailgun_api(recipient.email_address, body, subject)
       rescue Mailgun::Error => e
